@@ -1,6 +1,4 @@
 package slagalica;
-//test
-//test
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.JOptionPane;
@@ -14,7 +12,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import java.util.*;
-//Ovo je izmena
 public class SliderSlagalica 
 {
 	static JFrame frame = new JFrame();
@@ -68,13 +65,37 @@ public class SliderSlagalica
 		{
 			public void actionPerformed(ActionEvent ae)
 			{
-				frame.setSize(frame.getWidth() + 20, frame.getHeight() + 20);
-				frame.setLocationRelativeTo(null);
+				if (frame.getWidth() < Toolkit.getDefaultToolkit().getScreenSize().width &&
+						frame.getHeight() < Toolkit.getDefaultToolkit().getScreenSize().height)
+				{
+					frame.setSize(frame.getWidth() + 20, frame.getHeight() + 20);
+					frame.setLocationRelativeTo(null);
+				}
 			}
 		});
 		
 		povecaj.setAccelerator(KeyStroke.getKeyStroke('+'));
-		Toolkit.getDefaultToolkit().getScreenSize();
+		
+		JMenuItem smanji = new JMenuItem("Smanji");
+		prikaz.add(smanji);
+		
+		smanji.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent ae)
+			{
+				if (frame.getWidth() > 200 &&
+				    frame.getHeight() > 200)
+				{
+					frame.setSize(frame.getWidth() - 20, frame.getHeight() - 20);
+					frame.setLocationRelativeTo(null);
+				}
+			}
+		});
+		
+		smanji.setAccelerator(KeyStroke.getKeyStroke('-'));
+		
+		
+		
 		JMenuItem slikeLaka = new JMenuItem("Slike laka 3x3");
 		slikeLaka.addActionListener(new ActionListener()
 		{
