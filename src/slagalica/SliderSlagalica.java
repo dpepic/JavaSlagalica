@@ -1,4 +1,6 @@
 package slagalica;
+//test
+//test
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.JOptionPane;
@@ -12,7 +14,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import java.util.*;
-
+//Ovo je izmena
 public class SliderSlagalica 
 {
 	static JFrame frame = new JFrame();
