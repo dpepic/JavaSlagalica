@@ -1,65 +1,78 @@
 package slagalica;
+
 import java.awt.Graphics;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 
-public class dugmeSaSlikom extends JButton
+public class DugmeSaSlikom extends JButton 
 {
-	static BufferedImage[] komadici;
-	BufferedImage komad;
-	public static int brojKomadica;
-	boolean imamSliku = false;
+	static BufferedImage[] slicice;
+	boolean saSlikom = false;
 	
-	
-	public static void pripremi(File sslika)
+	public static void pripremiSlicice(int brojKomadica, File nekaSlika)
 	{
 		BufferedImage slika = null;
 		try 
+		//asdasdasd
 		{
-			slika = ImageIO.read(sslika);
+			slika = ImageIO.read(nekaSlika);
 		} catch (IOException e) 
 		{
 			e.printStackTrace();
 		}
-		komadici = new BufferedImage[brojKomadica];
 		
-		int sirinaKom = slika.getWidth() / (int)Math.sqrt(brojKomadica);
-		int visinaKom = slika.getHeight() / (int)Math.sqrt(brojKomadica);
+		slicice = new BufferedImage[brojKomadica];
+		int sirinaSlike = slika.getWidth() / (int)Math.sqrt(brojKomadica);
+		int visinaSlike = slika.getHeight() / (int)Math.sqrt(brojKomadica);
+		int x = 0;
+		int y = 0;
 		
-		int brSlike = 0;
-		
-		for (int kY=0; kY < slika.getHeight() - 5; kY += visinaKom)
+		for (int i = 0; i < brojKomadica; i++)
 		{
-			System.out.println("Y: " + kY);
-			for (int kX=0; kX < slika.getWidth() - 5; kX += sirinaKom)
+			if (x + sirinaSlike > slika.getWidth())
 			{
-				System.out.println("X: " + kX);
-				komadici[brSlike] = slika.getSubimage(kX, kY, sirinaKom, visinaKom);
-				brSlike++;
+				x = slika.getWidth() - sirinaSlike;
 			}
 			
+			if (y + visinaSlike > slika.getHeight())
+			{
+				y = slika.getHeight() - visinaSlike;
+			}
+			
+			slicice[i] = slika.getSubimage(x, y, sirinaSlike, visinaSlike);
+			
+			if (i%Math.sqrt(brojKomadica) == Math.sqrt(brojKomadica) - 1)
+			{
+				x = 0;
+				y += visinaSlike;
+			} else
+			{
+				x += sirinaSlike;
+			}
 		}
 	}
 	
-	public dugmeSaSlikom(String s, boolean slika)
+	public DugmeSaSlikom(String naziv, boolean saSlikom)
 	{
-		super(s);
-		if (slika)
-		{
-			this.imamSliku = true;
-			this.komad = komadici[Integer.parseInt(this.getText()) - 1];
-		}
+		super(naziv);
+		this.saSlikom = saSlikom;
 	}
 	
 	@Override
 	protected void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
-		if (this.isEnabled() && this.imamSliku)
-			g.drawImage(komad, 0, 0, this.getWidth(), this.getHeight(), this);
+		if (this.saSlikom)
+		{
+			try
+			{
+				g.drawImage(slicice[Integer.parseInt(this.getText()) - 1], 0, 0, this.getWidth(), this.getHeight(), this);
+			} catch (NumberFormatException e) {}
+			
+		}
 	}
 }
